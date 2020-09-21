@@ -1,0 +1,42 @@
+.logo{
+    height: 45px;
+}
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 65px;
+    /* background-color: yellow; */
+}
+.header input{
+    width: 25%;
+    height: 30px;
+    box-sizing: border-box;
+    padding: 15px;
+    font-size:14px;
+    background-color:transparent;
+    color:white;
+    border-radius:5px;
+    border: 1px solid white
+}
+.header input::placeholder{
+    color:white;
+    opacity:0.7;
+}
+.header div{
+    width: 50%;
+    height: 100%;
+    /* background-color: red; */
+}
+.header ul{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    list-style: none;
+}
+.header ul li{
+
+}
+.header button{
+    padding:5px 20px;
+}

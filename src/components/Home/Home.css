@@ -1,0 +1,26 @@
+h1{
+    font-size: 100px;
+}
+.home{
+    height: 80%;
+}
+.nextPrevious{
+    display: flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction: row;
+    /* background-color: red; */
+    width: 100%;
+
+}
+.nextPrevious i{
+    text-align: center;
+    background-color: white;
+    color: gray;
+    padding: 10px;
+    width:40px;
+    height: 40px;
+    margin: 5px;
+    border-radius: 50%;
+    font-weight: 900;
+}
