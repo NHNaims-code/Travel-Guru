@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Booking = () => {
+const NotFound = () => {
     return (
         <div>
-            <h1>Welcome</h1>
+            Page not found.
         </div>
     );
 };
 
-export default Booking;
+export default NotFound;
