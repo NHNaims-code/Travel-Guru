@@ -1,0 +1,90 @@
+h4{
+    color: black;
+}
+.form p{
+    color: black;
+    font-size:14px;
+}
+.form button{
+    font-weight:500;
+}
+.form{
+    width: 25%;
+    max-height: 60vh;
+    /* height: 60vh; */
+    background-color: white;
+    margin: 10px auto;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid gray;
+    padding: 20px;
+    border-radius:5px;
+}
+.form input{
+    background-color: transparent;
+    margin: 10px 0;
+    border: 0px solid gray;
+    border-bottom: 1px solid lightgray;
+    outline: none;
+    font-weight: 500;
+}
+.form input::placeholder{
+    font-weight: 500;
+    margin: 15px 0;
+    font-size: 14px;
+}
+.form p{
+    margin-top: 10px;
+}
+
+.or{
+    position: relative;
+    font-size: 16px;
+    width: 25%;
+    margin: 15px auto;
+}
+.or::before{
+    content: "";
+    position: absolute;
+    width: 40%;
+    height: 1px;
+    top: 50%;
+    left: 0;
+    background-color: lightgray;
+}
+.or::after{
+    content: "";
+    position: absolute;
+    width: 40%;
+    height: 1px;
+    top: 50%;
+    right: 0;
+    background-color: lightgray;
+}
+
+.login{
+    display: flex;
+    align-items: center;
+    width: 25%;
+    margin: 0 auto;
+    background-color:white;
+    color: black;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius:50px;
+}
+.login span{
+    width: 100%;
+    text-align: center;
+    /* background-color: red; */
+}
+.login img{
+    height: 30px;
+    
+}
+
+.remembar-forget{
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+}

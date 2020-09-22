@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button, Card } from 'react-bootstrap';
 import './SingleCard.css'
 import img1 from '../../image/img1.png';
+import { bookingContext } from '../../App';
 
 const SingleCard = (props) => {
-    const setCurrentResort = props.setCurrentResort;
+    const [currentResort, setCurrentResort] = useContext(bookingContext);
     const {img, name} = props.data;
     return (
         <div onClick={()=>{setCurrentResort(props.data)}}>

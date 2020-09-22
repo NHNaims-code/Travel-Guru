@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import logo from '../../Logo.png';
 import './Header.css';
 
@@ -14,7 +15,9 @@ const Header = () => {
                     <li>Blog</li>
                     <li>Contact</li>
                     <li>
+                        <Link to="/login">
                         <button className="btn btn-warning">Login</button>
+                        </Link>
                     </li>
                 </ul>
             </div>
