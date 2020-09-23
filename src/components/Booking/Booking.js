@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'
+import { useHistory, useLocation } from 'react-router-dom';
 import { bookingContext } from '../../App';
 
 const Booking = () => {
@@ -9,6 +10,13 @@ const Booking = () => {
     const date = new Date();
     const [selectedFrom, setSelectedFrom] = useState(date)
     const [selectedTo, setSelectedTo] = useState(date)
+
+    const history = useHistory();
+    const handleSubmit = (event) => {
+
+        history.push("/hotel");
+        event.preventDefault();
+    }
     return (
             <div className="home booking row container mx-auto d-flex align-items-center">
             <div className="col-md-6 text-left">
@@ -16,7 +24,7 @@ const Booking = () => {
                 <p>{currentResort.longDescription}</p>
             </div>
             <div className="col-md-6 d-flex d-flex">
-            <Form className="text-left bg-white p-5 rounded shadow">
+            <Form className="text-left bg-white p-5 rounded shadow" onSubmit={handleSubmit}>
                 <Form.Group controlId="exampleForm.ControlInput1">
                     <Form.Label className="text-secondary">Origin</Form.Label>
                     <Form.Control type="text" placeholder="name@example.com" value="Dhaka" />

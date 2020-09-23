@@ -11,7 +11,8 @@ firebase.initializeApp(firebaseConfig);
 
 const Login = () => {
     const [user, setUser] = useState({
-        newUser: false
+        newUser: false,
+        create: false,
     });
     const [currentResort, setCurrentResort, signedInUser, setSignedInUser] = useContext(bookingContext);
     // firebase
@@ -35,7 +36,6 @@ const Login = () => {
     }
 
     const handleBlur = (event) => {
-        console.log(event.target.name, event.target.value);
         let isFormValid = true;
         if(event.target.name === 'email'){
             isFormValid = /\S+@\S+\.\S+/.test(event.target.value);
@@ -59,8 +59,35 @@ const Login = () => {
         if(user.newUser && user.firstName && user.lastName && user.email && user.password === user.confirmPassword){
             firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
             .then(res => {
-                console.log(res);
+                var googlUser = firebase.auth().currentUser;
+                googlUser.updateProfile({
+                displayName: user.firstName,
+                photoURL: "https://i0.wp.com/bsnl.ch/wp-content/uploads/2019/03/avatar-default-circle.png?fit=260%2C260&ssl=1"
+                }).then(res => {
+                    const newUser = {...user}
+                    newUser.create = true;
+                    setUser(newUser);
+                }).catch(function(error) {
+                // An error happened.
+                });
             })
+        }
+        if(!user.newUser && user.email && user.password){
+            firebase.auth().signInWithEmailAndPassword(user.email, user.password)
+            .then(res => {
+                console.log(res);
+                const {displayName, photoURL, email} = res.user;
+                const signedInUser = {
+                isSignedIn: true,
+                name: displayName,
+                email: email,
+                password:'',
+                photo: photoURL,
+                error: 'error working',
+                success: true,
+                }
+                setSignedInUser(signedInUser);
+                })
         }
 
         event.preventDefault();
@@ -73,6 +100,9 @@ const Login = () => {
     }
     return (
         <div>
+            {
+                user.create && <div>Account successfully created. please login</div>
+            }
             <form onSubmit={handleSubmit} className="form">
                 {
                     user.newUser?<h4>Create an account</h4>:<h4>Login</h4> 

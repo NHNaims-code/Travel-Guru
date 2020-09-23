@@ -18,7 +18,8 @@ const Header = () => {
                     <li>Contact</li>
                     <li>
                         {
-                            signedInUser.name?<img style={{height:'40px', borderRadius:'50px'}} src={signedInUser.photo} alt=""/>:
+                            signedInUser.name?
+                            <div><p className="text-warning">{signedInUser.name}</p></div>:
                             <Link to="/login">
                             <button className="btn btn-warning">Login</button>
                             </Link>

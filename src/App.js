@@ -14,6 +14,7 @@ import {
 import Booking from './components/Booking/Booking';
 import NotFound from './components/NotFound/NotFound';
 import Login from './components/Login/Login';
+import Hotel from './components/Hotel/Hotel';
 export const bookingContext = createContext();
 
 function App() {
@@ -32,6 +33,9 @@ function App() {
           </Route>
           <Route path="/booking">
             <Booking/>
+          </Route>
+          <Route path="/hotel">
+            <Hotel/>
           </Route>
           <Route path="/login">
             <Login/>
