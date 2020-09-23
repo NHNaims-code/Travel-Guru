@@ -19,10 +19,11 @@ export const bookingContext = createContext();
 function App() {
   const data = fakeData;
   const [currentResort, setCurrentResort] = useState(data[0]);
+  const [signedInUser, setSignedInUser] = useState({})
   console.log(data[0]);
   return (
     <div className="App">
-      <bookingContext.Provider value={[currentResort, setCurrentResort]}>
+      <bookingContext.Provider value={[currentResort, setCurrentResort,signedInUser, setSignedInUser]}>
       <Router>
         <Header/>
         <Switch>

@@ -88,3 +88,7 @@ h4{
     align-items: center;
     justify-content: space-between;
 }
+
+.bottom-group{
+    position: relative;
+}
