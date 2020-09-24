@@ -2,22 +2,27 @@ import React from 'react';
 import './SingleHotel.css'
 import star from '../../Icon/star_1_.png'
 
-const SingleHotel = () => {
+const SingleHotel = (props) => {
+    const {title, guests, bedrooms, beds, baths, extra, rating, review, price, status, img} = props.data;
     return (
-        <div className="d-flex">
-            <img className="image" src="https://i.ibb.co/gdLhSyk/img2.png" alt=""/>
-            <div className="details">
-                <p id="title">AR Loung</p>
-                <p>4 guests 2bedrooms 2beds 2baths</p>
-                <p>wifi Air conditioning Kitchen</p>
-                <p>Cancellation fedibility availiable</p>
+        <div className="d-flex row align-content-center justify-content-center single-hotel">
+            <div className="col-sm-4 image">
+                <img src={img} alt=""/>
+            </div>
+            <div className="details col-sm-7 ">
+                <p id="title">{title}</p>
+                <div className="lightgray">
+                    <p>{guests} guests {bedrooms}bedrooms {beds}beds {baths}baths</p>
+                    <p>{extra}</p>
+                    <p>{status}</p>
+                </div>
                 <div className="d-flex justify-content-between align-items-center">
-                    <div className="d-flex align-items-center mt-2">
+                    <div className="d-flex align-items-center">
                         <img className="star mr-1" src={star} alt=""/> 
-                        <p>4.9(25)</p>
+                        <p className="font-weight-bold">{rating}({review})</p>
                     </div>
                     <div>
-                        $44/night ($167 total)
+                        <span className="font-weight-bold">${price}</span><span className="lightgray">/night ($167 total)</span>
                     </div>
                 </div>
             </div>

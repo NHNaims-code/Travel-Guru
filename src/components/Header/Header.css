@@ -5,7 +5,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 65px;
+    height: 10vh;
+    margin-bottom: 2vh;
+    /* border-bottom: 1px solid lightgray; */
     /* background-color: yellow; */
 }
 .header input{

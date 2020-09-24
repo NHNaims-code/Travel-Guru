@@ -1,0 +1,28 @@
+.hotel{
+    height: 78vh;
+    border-radius:10px;
+    color: black;
+}
+.hotel-info{
+    height: 72%;
+    overflow: auto;
+}
+.lightgray{
+    color: gray;
+}
+.bold-text{
+    font-weight: 500;
+}
+.headline{
+    font-size: 20px;
+    font-weight: 700;
+    margin:0;
+}
+.status{
+    margin:0;
+}
+.map{
+    height: 100%;
+    width: 100%;
+    border-radius:10px;
+}

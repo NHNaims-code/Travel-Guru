@@ -7,8 +7,9 @@ import './Header.css';
 const Header = () => {
     const [currentResort, setCurrentResort, signedInUser, setSignedInUser, user, setUser] = useContext(bookingContext);
     return (
+        <>
         <div className="header pt-4 container">
-            <img className="logo" src={logo} alt=""/>
+            <Link to={'/'}><img className="logo" src={logo} alt=""/></Link>
             <input type="text" placeholder=  "search your Destination..."/>
             <div>
                 <ul>
@@ -19,7 +20,7 @@ const Header = () => {
                     <li>
                         {
                             signedInUser.name?
-                            <div><p className="text-warning">{signedInUser.name}</p></div>:
+                            <div><img style={{height:'40px', borderRadius:'50px'}} src={signedInUser.photo} alt=""/></div>:
                             <Link to="/login">
                             <button className="btn btn-warning">Login</button>
                             </Link>
@@ -30,6 +31,10 @@ const Header = () => {
                 </ul>
             </div>
         </div>
+        <div>
+        <h3 className="text-warning"><p>{signedInUser.name}</p></h3>
+        </div>
+        </>
     );
 };
 

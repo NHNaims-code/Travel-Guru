@@ -1,6 +1,21 @@
+.single-hotel{
+    border-radius: 15px;
+}
+.single-hotel:hover{
+    background-color: lightgray;
+}
 .image{
-    height: 200px;
-    margin: 10px;
+    display: flex;
+    align-items: center;
+    height: 180px;
+    padding: 0px;
+    margin: 0;
+    cursor: pointer;
+}
+.image img{
+    box-sizing: border-box;
+    width: 100%;
+    padding-right: 5px;
 }
 .star{
     height: 20px;
@@ -9,16 +24,18 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 200px;
-    margin: 10px;
+    height: 180px;
+    margin:0;
+    cursor: pointer;
     text-align: left;
 }
+
 #title{
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 700;
     padding: 0;
-    margin: 10px 0;
+    margin: 5px 0;
 }
 .details p{
-    margin: 2.5px 0;
+    margin: 1px 0;
 }

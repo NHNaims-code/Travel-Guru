@@ -1,4 +1,5 @@
-const hotelInfo = [
+const hotelInfo = 
+[
     {
         "title":"Light bright airy stylish apt &safe peaceful stay",
         "guests": 4,

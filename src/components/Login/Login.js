@@ -6,6 +6,7 @@ import fb from "../../Icon/fb.png";
 import google from "../../Icon/google.png";
 import firebaseConfig from './firebase.config';
 import { bookingContext } from '../../App';
+import { useHistory, useLocation } from 'react-router-dom';
 
 firebase.initializeApp(firebaseConfig);
 
@@ -15,11 +16,17 @@ const Login = () => {
         create: false,
     });
     const [currentResort, setCurrentResort, signedInUser, setSignedInUser] = useContext(bookingContext);
+     // redirect
+     let history = useHistory();
+     let location = useLocation();
+ 
+     let { from } = location.state || { from: { pathname: "/" } };
     // firebase
-    const provider = new firebase.auth.GoogleAuthProvider();
+    const facebookProvider = new firebase.auth.FacebookAuthProvider();
+    const googleProvider = new firebase.auth.GoogleAuthProvider();
     console.log(signedInUser);
     const signInWithGoogle = ()=>{
-        firebase.auth().signInWithPopup(provider)
+        firebase.auth().signInWithPopup(googleProvider)
         .then(res => {
             const {displayName, photoURL, email} = res.user;
             const signedInUser = {
@@ -32,7 +39,30 @@ const Login = () => {
               success: true,
             }
             setSignedInUser(signedInUser);
+                history.replace(from);
+        }).catch(error => {
+            setSignedInUser({allErrors: error});
         })
+    }
+    const signInWithFacebook = () => {
+        firebase.auth().signInWithPopup(facebookProvider).then(function(result) {
+            const user = result.user;
+            console.log(result.user.photo);
+            const {displayName, photo, email} = user;
+            const signedInUser = {
+              isSignedIn: true,
+              name: displayName,
+              email: email,
+              password:'',
+              photo: photo,
+              error: 'error working',
+              success: true,
+            }
+            setSignedInUser(signedInUser);
+                history.replace(from);
+          }).catch(err => {
+            setSignedInUser({allErrors : err.message})
+          });
     }
 
     const handleBlur = (event) => {
@@ -67,8 +97,8 @@ const Login = () => {
                     const newUser = {...user}
                     newUser.create = true;
                     setUser(newUser);
-                }).catch(function(error) {
-                // An error happened.
+                }).catch(function(err) {
+                    setSignedInUser({allErrors : err.message})
                 });
             })
         }
@@ -83,13 +113,14 @@ const Login = () => {
                 email: email,
                 password:'',
                 photo: photoURL,
-                error: 'error working',
                 success: true,
                 }
                 setSignedInUser(signedInUser);
-                })
+                history.replace(from);
+            }).catch(err => {
+                setSignedInUser({allErrors : err.message})
+            })
         }
-
         event.preventDefault();
       }
 
@@ -98,8 +129,11 @@ const Login = () => {
         newUser.newUser = !user.newUser;
         setUser(newUser);
     }
+
+   
     return (
         <div>
+            <p className="text-danger">Error Show {signedInUser.allErrors}</p>
             {
                 user.create && <div>Account successfully created. please login</div>
             }
@@ -108,15 +142,15 @@ const Login = () => {
                     user.newUser?<h4>Create an account</h4>:<h4>Login</h4> 
                 }
                 {
-                    user.newUser && <input type="text" name="firstName" id="" placeholder="First Name" onBlur={handleBlur}/>
+                    user.newUser && <input type="text" name="firstName" id="" placeholder="First Name" required onBlur={handleBlur}/>
                 }
                 {
-                    user.newUser && <input type="text" name="lastName" id="" placeholder="Last Name" onBlur={handleBlur}/> 
+                    user.newUser && <input type="text" name="lastName" id="" placeholder="Last Name" required onBlur={handleBlur}/> 
                 }
-                <input type="text" name="email" id="" placeholder="Username or Email" onBlur={handleBlur}/>
-                <input type="password" name="password" id="" placeholder="Password" onBlur={handleBlur}/>
+                <input type="text" name="email" id="" placeholder="Username or Email" required onBlur={handleBlur}/>
+                <input type="password" name="password" id="" placeholder="Password" required onBlur={handleBlur}/>
                 {
-                    user.newUser && <input type="password" name="confirmPassword" id="" placeholder="Confirm Password" onBlur={handleBlur}/>
+                    user.newUser && <input type="password" name="confirmPassword" id="" placeholder="Confirm Password" required onBlur={handleBlur}/>
                 }
                 {
                     !user.newUser && 
@@ -141,7 +175,7 @@ const Login = () => {
             </form>
             <div className="bottom-group">
                 <p className="or">or</p>
-                <div className="login">
+                <div className="login" onClick={signInWithFacebook}>
                     <img src={fb} alt=""/>
                     <span>Continue with Facebook</span>
                 </div>

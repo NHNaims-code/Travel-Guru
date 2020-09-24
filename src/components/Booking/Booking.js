@@ -6,7 +6,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { bookingContext } from '../../App';
 
 const Booking = () => {
-    const [currentResort, setCurrentResort] = useContext(bookingContext)
+    const [currentResort, setCurrentResort,signedInUser, setSignedInUser, travelDate, setTravelDate] = useContext(bookingContext)
     const date = new Date();
     const [selectedFrom, setSelectedFrom] = useState(date)
     const [selectedTo, setSelectedTo] = useState(date)
@@ -16,6 +16,31 @@ const Booking = () => {
 
         history.push("/hotel");
         event.preventDefault();
+    }
+
+    const handleDatePicker = (selectedDate, fromOrTo) =>{
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        var date = new Date(selectedDate);
+        const toMonth = date.getMonth();
+        const toMonthName = monthNames[toMonth];
+        const toDate = date.getDate();
+
+        if(fromOrTo === 'from'){
+            const newTravelDate = {...travelDate};
+            newTravelDate.from = toDate;
+            newTravelDate.month = toMonthName;
+            setTravelDate(newTravelDate) 
+            console.log(travelDate);
+        }
+        if(fromOrTo === 'to'){
+            const newTravelDate = {...travelDate};
+            newTravelDate.to = toDate;
+            newTravelDate.month = toMonthName;
+            setTravelDate(newTravelDate) 
+            console.log(travelDate);
+        }
+        
+
     }
     return (
             <div className="home booking row container mx-auto d-flex align-items-center">
@@ -31,7 +56,7 @@ const Booking = () => {
                 </Form.Group>
                 <Form.Group controlId="exampleForm.ControlInput1">
                     <Form.Label className="text-secondary">Destination</Form.Label>
-                    <Form.Control type="text" placeholder="name@example.com" value={currentResort.name} />
+                    <Form.Control type="text" placeholder="name@example.com" value={currentResort.name} disabled/>
                 </Form.Group>
                 <Row>
                     <Col>
@@ -39,7 +64,11 @@ const Booking = () => {
                         <Form.Label className="text-secondary">From</Form.Label>
                         <ReactDatePicker
                         selected={selectedFrom}
-                        onChange={date => setSelectedFrom(date)}
+                        onChange={date => {
+                            setSelectedFrom(date);
+                            handleDatePicker(date, "from");
+                            }
+                        }
                         dateFormat='dd/MM'
                         >
                         </ReactDatePicker>
@@ -50,10 +79,13 @@ const Booking = () => {
                         <Form.Label className="text-secondary">From</Form.Label>
                         <ReactDatePicker
                         selected={selectedTo}
-                        onChange={date => setSelectedTo(date)}
+                        onChange={(date) => {
+                            setSelectedTo(date)
+                            handleDatePicker(date, "to");
+                        }}
                         dateFormat='dd/MM'
                         >
-                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                            <i className="fa fa-calendar" aria-hidden="true"></i>
                         </ReactDatePicker>
                     </Form.Group>
                     </Col>
