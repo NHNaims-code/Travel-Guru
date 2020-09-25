@@ -131,7 +131,7 @@ const Login = () => {
                 }
                 
                 {
-                    user.newUser?<p>Already have an account? <span className="text-warning" onClick={handleLoginOrCreate}>Login</span></p>:<p>Don't have an account? <span className="text-warning" onClick={handleLoginOrCreate}>Create an account</span></p>
+                    user.newUser?<p className="pointer">Already have an account? <span className="text-warning" onClick={handleLoginOrCreate}>Login</span></p>:<p className="pointer">Don't have an account? <span className="text-warning" onClick={handleLoginOrCreate}>Create an account</span></p>
                 }
                 
             </form>

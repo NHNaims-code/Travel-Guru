@@ -33,7 +33,8 @@ export const signInWithGoogle = ()=>{
 }
 
 export const signInWithFacebook = () => {
-    return firebase.auth().signInWithPopup(facebookProvider).then(function(result) {
+    return firebase.auth().signInWithPopup(facebookProvider)
+    .then(result => {
         const user = result.user;
         console.log(result.user.photo);
         const {displayName, photoURL, email} = user;
