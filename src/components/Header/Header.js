@@ -1,4 +1,6 @@
 import React, { useContext } from 'react';
+import * as firebase from "firebase/app";
+import "firebase/auth";
 import { Link } from 'react-router-dom';
 import { bookingContext } from '../../App';
 import logo from '../../Logo.png';
@@ -6,6 +8,13 @@ import './Header.css';
 
 const Header = () => {
     const [currentResort, setCurrentResort, signedInUser, setSignedInUser, user, setUser] = useContext(bookingContext);
+    const logOut = () => {
+        firebase.auth().signOut().then(function() {
+            setSignedInUser({})
+          }).catch(function(error) {
+            console.log(error.message);
+          });
+    }
     return (
         <>
         <div className="header pt-4 container">
@@ -31,9 +40,13 @@ const Header = () => {
                 </ul>
             </div>
         </div>
-        <div>
-        <h3 className="text-warning"><p>{signedInUser.name}</p></h3>
-        </div>
+        {
+            signedInUser.name &&
+            <div className="d-flex justify-content-center text-center">
+            <h3 className="text-warning">{signedInUser.name}</h3>
+            <div className="text-white btn btn-sm btn-danger" id="logout" onClick={logOut}>Logout</div>
+            </div>
+        }
         </>
     );
 };

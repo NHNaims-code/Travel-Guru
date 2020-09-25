@@ -36,9 +36,13 @@
     align-items: center;
     list-style: none;
 }
-.header ul li{
 
-}
 .header button{
     padding:5px 20px;
+}
+
+#logout{
+    height: 28px;
+    padding: 0 5px;
+    margin: 0 5px;
 }

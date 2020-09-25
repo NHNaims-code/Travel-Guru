@@ -4,6 +4,7 @@ import ReactDatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'
 import { useHistory, useLocation } from 'react-router-dom';
 import { bookingContext } from '../../App';
+import './Booking.css';
 
 const Booking = () => {
     const [currentResort, setCurrentResort,signedInUser, setSignedInUser, travelDate, setTravelDate] = useContext(bookingContext)
@@ -43,13 +44,13 @@ const Booking = () => {
 
     }
     return (
-            <div className="home booking row container mx-auto d-flex align-items-center">
+            <div className="home  row container mx-auto d-flex align-items-center">
             <div className="col-md-6 text-left">
                 <h1>{currentResort.name}</h1>
                 <p>{currentResort.longDescription}</p>
             </div>
             <div className="col-md-6 d-flex d-flex">
-            <Form className="text-left bg-white p-5 rounded shadow" onSubmit={handleSubmit}>
+            <Form className="text-left booking p-5 rounded shadow" onSubmit={handleSubmit}>
                 <Form.Group controlId="exampleForm.ControlInput1">
                     <Form.Label className="text-secondary">Origin</Form.Label>
                     <Form.Control type="text" placeholder="name@example.com" value="Dhaka" />
@@ -76,7 +77,7 @@ const Booking = () => {
                     </Col>
                     <Col>
                     <Form.Group controlId="exampleForm.ControlInput1">
-                        <Form.Label className="text-secondary">From</Form.Label>
+                        <Form.Label className="text-secondary d-block">To</Form.Label>
                         <ReactDatePicker
                         selected={selectedTo}
                         onChange={(date) => {
@@ -85,8 +86,9 @@ const Booking = () => {
                         }}
                         dateFormat='dd/MM'
                         >
-                            <i className="fa fa-calendar" aria-hidden="true"></i>
+                            
                         </ReactDatePicker>
+                        
                     </Form.Group>
                     </Col>
                 </Row>

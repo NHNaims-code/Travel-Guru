@@ -21,7 +21,7 @@ const Hotel = () => {
                 </div>
                <div className="hotel-info">
                 {
-                    data.map(singleData => <SingleHotel data={singleData}></SingleHotel>)
+                    data.map(singleData => <SingleHotel data={singleData} key={singleData.id}></SingleHotel>)
                 }
                </div>
             </div>

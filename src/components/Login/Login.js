@@ -1,14 +1,13 @@
 import React, { useContext, useState } from 'react';
-import * as firebase from "firebase/app";
-import "firebase/auth";
+
 import './Login.css';
 import fb from "../../Icon/fb.png";
 import google from "../../Icon/google.png";
-import firebaseConfig from './firebase.config';
+import { initializeLoginFramework, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithGoogle, signInWithFacebook, updateProfile } from './loginManager';
 import { bookingContext } from '../../App';
 import { useHistory, useLocation } from 'react-router-dom';
 
-firebase.initializeApp(firebaseConfig);
+initializeLoginFramework();
 
 const Login = () => {
     const [user, setUser] = useState({
@@ -22,59 +21,34 @@ const Login = () => {
  
      let { from } = location.state || { from: { pathname: "/" } };
     // firebase
-    const facebookProvider = new firebase.auth.FacebookAuthProvider();
-    const googleProvider = new firebase.auth.GoogleAuthProvider();
-    console.log(signedInUser);
-    const signInWithGoogle = ()=>{
-        firebase.auth().signInWithPopup(googleProvider)
-        .then(res => {
-            const {displayName, photoURL, email} = res.user;
-            const signedInUser = {
-              isSignedIn: false,
-              name: displayName,
-              email: email,
-              password:'',
-              photo: photoURL,
-              error: 'error working',
-              success: true,
-            }
-            setSignedInUser(signedInUser);
-                history.replace(from);
-        }).catch(error => {
-            setSignedInUser({allErrors: error});
+    const signInWithGoogleOption = () => {
+        signInWithGoogle()
+        .then(response => {
+            setSignedInUser(response);
+            response.email && history.replace(from);
         })
     }
-    const signInWithFacebook = () => {
-        firebase.auth().signInWithPopup(facebookProvider).then(function(result) {
-            const user = result.user;
-            console.log(result.user.photo);
-            const {displayName, photo, email} = user;
-            const signedInUser = {
-              isSignedIn: true,
-              name: displayName,
-              email: email,
-              password:'',
-              photo: photo,
-              error: 'error working',
-              success: true,
-            }
-            setSignedInUser(signedInUser);
-                history.replace(from);
-          }).catch(err => {
-            setSignedInUser({allErrors : err.message})
-          });
+
+    const signInWithFacebookOption = () => {
+        signInWithFacebook()
+        .then(response => {
+            setSignedInUser(response);
+            response.email && history.replace(from);
+        })
     }
+
 
     const handleBlur = (event) => {
         let isFormValid = true;
         if(event.target.name === 'email'){
             isFormValid = /\S+@\S+\.\S+/.test(event.target.value);
         }
-        if(event.target.name === 'password'){
+        if(event.target.name === 'password' || event.target.name === 'confirmPassword'){
             const minimumSixDigit = event.target.value.length > 5;
-            const isPasswordValided = /\S+\d+/.test(event.target.value);
-    
-           isFormValid = minimumSixDigit && isPasswordValided;
+            // const isPasswordValided = /\S+\d+/.test(event.target.value);
+            // !isPasswordValided?setSignedInUser({allErrors: "Passwords should have minium six Digit"}):setSignedInUser({});
+        !minimumSixDigit?setSignedInUser({allErrors: "Passwords should have minium six Digit"}):setSignedInUser({});
+           isFormValid = minimumSixDigit;
         }
     
         if(isFormValid){
@@ -86,39 +60,25 @@ const Login = () => {
       }
 
       const handleSubmit = (event) => {
-        if(user.newUser && user.firstName && user.lastName && user.email && user.password === user.confirmPassword){
-            firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
-            .then(res => {
-                var googlUser = firebase.auth().currentUser;
-                googlUser.updateProfile({
-                displayName: user.firstName,
-                photoURL: "https://i0.wp.com/bsnl.ch/wp-content/uploads/2019/03/avatar-default-circle.png?fit=260%2C260&ssl=1"
-                }).then(res => {
-                    const newUser = {...user}
-                    newUser.create = true;
-                    setUser(newUser);
-                }).catch(function(err) {
-                    setSignedInUser({allErrors : err.message})
-                });
-            })
+        if(user.newUser && user.firstName && user.lastName && user.email && user.password){
+            if(user.password === user.confirmPassword){
+                createUserWithEmailAndPassword(user.email, user.password)
+                .then(response => {
+                    user.create = true;
+                    updateProfile(user)
+                    .then(res => {
+                        setUser(res);
+                    })
+                })
+            }else{
+                setSignedInUser({allErrors: "Passwords are not match"})
+            }
         }
         if(!user.newUser && user.email && user.password){
-            firebase.auth().signInWithEmailAndPassword(user.email, user.password)
-            .then(res => {
-                console.log(res);
-                const {displayName, photoURL, email} = res.user;
-                const signedInUser = {
-                isSignedIn: true,
-                name: displayName,
-                email: email,
-                password:'',
-                photo: photoURL,
-                success: true,
-                }
-                setSignedInUser(signedInUser);
-                history.replace(from);
-            }).catch(err => {
-                setSignedInUser({allErrors : err.message})
+            signInWithEmailAndPassword(user.email, user.password)
+            .then(response => {
+                setSignedInUser(response);
+                response.email && history.replace(from);
             })
         }
         event.preventDefault();
@@ -133,7 +93,9 @@ const Login = () => {
    
     return (
         <div>
-            <p className="text-danger">Error Show {signedInUser.allErrors}</p>
+            {
+                signedInUser.allErrors && <p className="alert alert-danger">{signedInUser.allErrors}</p>
+            }
             {
                 user.create && <div>Account successfully created. please login</div>
             }
@@ -156,8 +118,8 @@ const Login = () => {
                     !user.newUser && 
                     <div className="remembar-forget">
                     <div className="mt-2">
-                        <input className="m-1" type="checkbox" name="" id="remember"/>
-                        <label className="text-dark" for="remember">Remember me</label>
+                        <input className="m-1" type="checkbox" id="remember"/>
+                        <label className="text-dark" htmlFor="remember">Remember me</label>
                     </div>
                     <div className="text-warning">
                         Forgot Password
@@ -175,11 +137,11 @@ const Login = () => {
             </form>
             <div className="bottom-group">
                 <p className="or">or</p>
-                <div className="login" onClick={signInWithFacebook}>
+                <div className="login" onClick={signInWithFacebookOption}>
                     <img src={fb} alt=""/>
                     <span>Continue with Facebook</span>
                 </div>
-                <div className="login" onClick={signInWithGoogle}>
+                <div className="login" onClick={signInWithGoogleOption}>
                     <img src={google} alt=""/>
                     <span>Continue with Google</span>
                 </div>
